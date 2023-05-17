@@ -38,8 +38,8 @@ def start(eth, timeout):
         tmp = packet[55:57]   # Temperature
         fps = packet[141:143] # FPS rate
 
-        temp = float(int.from_bytes(tmp, 'big'))/1000.0
-        frat = float(int.from_bytes(fps, 'big'))/1000.0
+        temp = int.from_bytes(tmp, 'little')
+        frat = int.from_bytes(fps, 'little')
 
         if first_packet:
           temp_min = temp_max = temp 
