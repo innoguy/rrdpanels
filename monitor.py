@@ -58,8 +58,7 @@ def start(eth, timeout):
 
         now = datetime.now()
         if (now - last).seconds >= timeout:
-          shell = "rrdtool updatev panels.rrd N:{}:{}:{}:{}".format(temp_min,temp_max,frat_min,frat_max)
-          print(shell)
+          shell = "rrdtool updatev panels.rrd N:{}:{}:{}:{}:{}".format(len(panels),temp_min,temp_max,frat_min,frat_max)
           system(shell)
           print('Number of detected panels  : {}'.format(len(panels)))
           print('Temperature range          : {} - {}'.format(temp_min, temp_max))
@@ -76,11 +75,12 @@ if __name__ == '__main__':
   args = parser.parse_args()
   if not exists ("panels.rrd"):
     system("rrdtool create panels.rrd --step 60 "
+           "DS:detected:GAUGE:60:U:U "
            "DS:temp_min:GAUGE:60:U:U "
            "DS:temp_max:GAUGE:60:U:U "
            "DS:frat_min:GAUGE:60:U:U "
            "DS:frat_max:GAUGE:60:U:U "
-           "RRA:AVERAGE:0.5:1:100")
+           "RRA:AVERAGE:0.5:1:1000")
 
   if (args.interface == ""):
     iface = "enp5s0"
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     iface = args.interface
 
   if (args.time_interval == ""):
-    interval = 10
+    interval = 30
   else:
     interval = args.time_interval
 
