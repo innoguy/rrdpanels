@@ -32,40 +32,38 @@ def start(eth, timeout):
 
 
       eth_type = (packet[12] << 8) + packet[13]
-      if not (eth_type == 0x07d0 and src[0] == 0xe2 and src[1] == 0xff and cmd == 0x30):
-        continue
-      
-      panels.add(src)
+      if (eth_type == 0x07d0 and src[0] == 0xe2 and src[1] == 0xff and cmd == 0x30):
+        panels.add(src)
 
-      tmp = packet[55:57]   # Temperature
-      fps = packet[141:143] # FPS rate
+        tmp = packet[55:57]   # Temperature
+        fps = packet[141:143] # FPS rate
 
-      temp = float(int.from_bytes(tmp, 'big'))/1000.0
-      frat = float(int.from_bytes(fps, 'big'))/1000.0
+        temp = float(int.from_bytes(tmp, 'big'))/1000.0
+        frat = float(int.from_bytes(fps, 'big'))/1000.0
 
-      if first_packet:
-        temp_min = temp_max = temp 
-        frat_min = frat_max = frat
-        first_packet = False
+        if first_packet:
+          temp_min = temp_max = temp 
+          frat_min = frat_max = frat
+          first_packet = False
 
-      if temp < temp_min:
-        temp_min = temp
-      elif temp > temp_max:
-        temp_max = temp
+        if temp < temp_min:
+          temp_min = temp
+        elif temp > temp_max:
+          temp_max = temp
 
-      if frat < frat_min:
-        frat_min = frat
-      elif frat > frat_max:
-        frat_max = frat
+        if frat < frat_min:
+          frat_min = frat
+        elif frat > frat_max:
+          frat_max = frat
 
-      now = datetime.now()
-      if (now - last).seconds >= timeout:
-        system("rrdtool updatev panels.rrd N:temp_min:temp_max:frat_min:frat_max")
-        print('Number of detected panels  : {}'.format(len(panels)))
-        print('Temperature range          : {} - {}'.format(temp_min, temp_max))
-        print('FPS range                  : {} - {}'.format(frat_min, frat_max))
-        panels.clear()
-        last = now
+        now = datetime.now()
+        if (now - last).seconds >= timeout:
+          system("rrdtool updatev panels.rrd N:temp_min:temp_max:frat_min:frat_max")
+          print('Number of detected panels  : {}'.format(len(panels)))
+          print('Temperature range          : {} - {}'.format(temp_min, temp_max))
+          print('FPS range                  : {} - {}'.format(frat_min, frat_max))
+          panels.clear()
+          last = now
 
 if __name__ == '__main__':
   signal.signal(signal.SIGINT, sigint_handler)
