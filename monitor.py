@@ -40,8 +40,8 @@ def start(eth, timeout):
       tmp = packet[55:57]   # Temperature
       fps = packet[141:143] # FPS rate
 
-      temp  = float(int.from_bytes(tmp, 'big'))/1000.0
-      frat = int.from_bytes(fps, 'big')
+      temp = float(int.from_bytes(tmp, 'big'))/1000.0
+      frat = float(int.from_bytes(fps, 'big'))/1000.0
 
       if first_packet:
         temp_min = temp_max = temp 
@@ -60,7 +60,7 @@ def start(eth, timeout):
 
       now = datetime.now()
       if (now - last).seconds >= timeout:
-        system("rrdtool updatev panels.rrd N:temp_min:temp:max:frat:min:frat:max")
+        system("rrdtool updatev panels.rrd N:temp_min:temp_max:frat_min:frat_max")
         print('Number of detected panels  : {}'.format(len(panels)))
         print('Temperature range          : {} - {}'.format(temp_min, temp_max))
         print('FPS range                  : {} - {}'.format(frat_min, frat_max))
