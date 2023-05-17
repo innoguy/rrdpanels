@@ -58,11 +58,14 @@ def start(eth, timeout):
 
         now = datetime.now()
         if (now - last).seconds >= timeout:
-          system("rrdtool updatev panels.rrd N:temp_min:temp_max:frat_min:frat_max")
+          shell = "rrdtool updatev panels.rrd N:"+temp_min+":"+temp_max+":"+frat_min+":"+frat_max+""
+          print(shell)
+          system(shell)
           print('Number of detected panels  : {}'.format(len(panels)))
           print('Temperature range          : {} - {}'.format(temp_min, temp_max))
           print('FPS range                  : {} - {}'.format(frat_min, frat_max))
           panels.clear()
+          first_panel=True
           last = now
 
 if __name__ == '__main__':
