@@ -3,6 +3,8 @@ import select
 import signal
 import socket
 import sys
+from os.path import exists
+from os import system 
 
 from datetime import datetime
 
@@ -38,7 +40,7 @@ def start(eth, timeout):
       tmp = packet[55:57]   # Temperature
       fps = packet[141:143] # FPS rate
 
-      temp  = float(int.from_bytes(tmp, 'big'))/100.0
+      temp  = float(int.from_bytes(tmp, 'big'))/1000.0
       frat = int.from_bytes(fps, 'big')
 
       if first_packet:
@@ -58,9 +60,10 @@ def start(eth, timeout):
 
       now = datetime.now()
       if (now - last).seconds >= timeout:
+        system("rrdtool updatev panels.rrd N:temp_min:temp:max:frat:min:frat:max")
         print('Number of detected panels  : {}'.format(len(panels)))
         print('Temperature range          : {} - {}'.format(temp_min, temp_max))
-        print('FPS range                  : {} - {}'.format(temp_min, temp_max))
+        print('FPS range                  : {} - {}'.format(frat_min, frat_max))
         panels.clear()
         last = now
 
@@ -70,4 +73,12 @@ if __name__ == '__main__':
   parser.add_argument('-i', '--interface', type=str, help='Ethernet interface to monitor.')
   parser.add_argument('-t', '--time-interval', type=int, default=1, help='The time interval to monitor the detected panels.')
   args = parser.parse_args()
+  if not exists ("panels.rrd"):
+    system("rrdtool create panels.rrd --step 60 "
+           "DS:temp_min:GAUGE:60:U:U "
+           "DS:temp_max:GAUGE:60:U:U "
+           "DS:frat_min:GAUGE:60:U:U "
+           "DS:frat_max:GAUGE:60:U:U "
+           "RRA:AVERAGE:0.5:1:100")
+
   start(args.interface, args.time_interval)
