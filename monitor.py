@@ -58,7 +58,7 @@ def start(eth, timeout):
 
         now = datetime.now()
         if (now - last).seconds >= timeout:
-          shell = "rrdtool updatev panels.rrd N:"+temp_min+":"+temp_max+":"+frat_min+":"+frat_max+""
+          shell = "rrdtool updatev panels.rrd N:{}:{}:{}:{}".format(temp_min,temp_max,frat_min,frat_max)
           print(shell)
           system(shell)
           print('Number of detected panels  : {}'.format(len(panels)))
