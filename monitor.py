@@ -81,4 +81,14 @@ if __name__ == '__main__':
            "DS:frat_max:GAUGE:60:U:U "
            "RRA:AVERAGE:0.5:1:100")
 
-  start(args.interface, args.time_interval)
+  if (args.interface == ""):
+    iface = "enp5s0"
+  else:
+    iface = args.interface
+
+  if (args.time_interval == ""):
+    interval = 10
+  else:
+    interval = args.time_interval
+
+  start(iface, interval)
