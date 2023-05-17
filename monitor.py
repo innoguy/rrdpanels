@@ -15,20 +15,52 @@ def sigint_handler(signal, frame):
 def start(eth, timeout):
   last = datetime.now()
   panels = set()
+
+  first_packet = True
+
   s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(3))
   s.bind((eth, 0))
   while True:
     r, _, _, = select.select([s], [], [], 1.)
     if len(r) > 0:
       packet = s.recv(1500)
-      dest = packet[:6] # Destination MAC address
-      src = packet[6:12] # Source MAC address
+      dst = packet[:6]      # Destination MAC address
+      src = packet[6:12]    # Source MAC address
+      cmd = packet[14]      # Nucleus CMD
+
+
       eth_type = (packet[12] << 8) + packet[13]
-      if eth_type == 0x07d0 and src[0] == 0xe2 and src[1] == 0xff:
-        panels.add(src)
+      if not (eth_type == 0x07d0 and src[0] == 0xe2 and src[1] == 0xff and cmd == 0x30):
+        continue
+      
+      panels.add(src)
+
+      tmp = packet[55:57]   # Temperature
+      fps = packet[141:143] # FPS rate
+
+      temp  = float(int.from_bytes(tmp, 'big'))/100.0
+      frat = int.from_bytes(fps, 'big')
+
+      if first_packet:
+        temp_min = temp_max = temp 
+        frat_min = frat_max = frat
+        first_packet = False
+
+      if temp < temp_min:
+        temp_min = temp
+      elif temp > temp_max:
+        temp_max = temp
+
+      if frat < frat_min:
+        frat_min = frat
+      elif frat > frat_max:
+        frat_max = frat
+
       now = datetime.now()
       if (now - last).seconds >= timeout:
-        print('Number of detected panels: {}'.format(len(panels)))
+        print('Number of detected panels  : {}'.format(len(panels)))
+        print('Temperature range          : {} - {}'.format(temp_min, temp_max))
+        print('FPS range                  : {} - {}'.format(temp_min, temp_max))
         panels.clear()
         last = now
 
