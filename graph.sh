@@ -1,6 +1,10 @@
 #!/bin/bash
 
 RRA="0"
+MIN_WIDTH=1000
+HEIGHT=800
+LINE_WIDTH=1
+DB="$PWD/panels"
 
 OPTS="hv:d:o:t:s:e:r:h:w"
 LONGOPTS="help,verbose:,database:,output:,start:,end:,rra:,height:,min-width:"
@@ -121,11 +125,6 @@ if [[ ! END =~ [N] ]]
 then
     END=$(bc -l <<< ${END/N/$NOW})
 fi
-
-MIN_WIDTH=1000
-HEIGHT=800
-LINE_WIDTH=1
-DB="$PWD/panels"
 
 LSTART=`date +%F\ %T -d @$START`
 LEND=`date +%F\ %T -d @$END`
