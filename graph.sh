@@ -4,7 +4,7 @@ RRA="0"
 MIN_WIDTH=1000
 HEIGHT=800
 LINE_WIDTH=1
-DB="$PWD/panels"
+DB="/var/log/panels"
 
 OPTS="hv:d:o:t:s:e:r:h:w"
 LONGOPTS="help,verbose:,database:,output:,start:,end:,rra:,height:,min-width:"

@@ -7,6 +7,8 @@ from os import system
 from datetime import datetime
 from time import sleep
 
+DB="/var/log/panels"
+
 def hexstring(hexarray):
   return ''.join('{:02x}'.format(x) for x in hexarray)
 
@@ -39,7 +41,8 @@ def start(eth, timeout):
 
         now = datetime.now()
         if (now - last).seconds >= timeout:
-          shell = "rrdtool updatev panels.rrd N:{}:{}:{}".format(len(panels),float(temp)/10,frat)
+          shell = "rrdtool updatev {}.rrd N:{}:{}:{}".format(DB,len(panels),float(temp)/10,frat)
+          print(shell)
           system(shell)
           panels.clear()
           last = now

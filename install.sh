@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [ ! -f "$PWD/panels.rrd" ]
+DB="/var/log/panels"
+
+if [ ! -f "$DB.rrd" ]
 then
-	rrdtool create $PWD/panels.rrd --step 3600 \
+	rrdtool create $DB.rrd --step 3600 \
 		DS:detected:GAUGE:3600:U:U \
         DS:temp:GAUGE:3600:U:U \
         DS:frat:GAUGE:3600:U:U \
