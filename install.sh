@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if [ ! -f "$PWD/panels.rrd" ]
+then
+	rrdtool create $PWD/panels.rrd --step 3600 \
+		DS:detected:GAUGE:3600:U:U \
+        DS:temp:GAUGE:3600:U:U \
+        DS:frat:GAUGE:3600:U:U \
+        RRA:AVERAGE:0.5:1:1000 
+fi
+
 if [ ! -f "$PWD/panelmonitoring.service" ]
 then
 	echo "[Unit]" > panelmonitoring.service

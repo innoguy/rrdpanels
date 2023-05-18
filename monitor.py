@@ -17,7 +17,6 @@ def start(eth, timeout):
   last = datetime.now()
   panels = set()
 
-
   s = socket(AF_PACKET, SOCK_RAW, htons(3))
   s.bind((eth, 0))
   while True:
@@ -48,11 +47,4 @@ def start(eth, timeout):
 
 if __name__ == '__main__':
   signal(SIGINT, sigint_handler)
-  if not exists ("panels.rrd"):
-    system("rrdtool create panels.rrd --step 3600 "
-           "DS:detected:GAUGE:3600:U:U "
-           "DS:temp:GAUGE:3600:U:U "
-           "DS:frat:GAUGE:3600:U:U "
-           "RRA:AVERAGE:0.5:1:1000")
-
   start("enp5s0", 2)
