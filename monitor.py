@@ -9,7 +9,7 @@ from time import sleep
 
 DB="/var/log/panels"
 capture_window=3  # seconds to capture packet
-heartbeat=60      # seconds sleep between capturs
+heartbeat=30      # seconds sleep between captures
 capture_space=60  # seconds between recorded values
 
 
@@ -48,8 +48,8 @@ def start(eth, timeout):
           print(shell)
           system(shell)
           panels.clear()
-          last = now
           sleep(heartbeat)
+          last = now
 
 if __name__ == '__main__':
   signal(SIGINT, sigint_handler)

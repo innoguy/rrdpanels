@@ -148,7 +148,7 @@ rrdtool graph \
         VDEF:detected_avg=detected,AVERAGE \
         CDEF:detected_norm=detected,detected_max,/,100,\* \
         CDEF:detected_norm_avg=detected,POP,detected_avg,100,\*,detected_max,/ \
-        LINE1:detected_norm${COLORS[0]}:"#panels\t" \
+        LINE1:detected${COLORS[0]}:"#panels\t" \
         GPRINT:detected_max:"(max\: %.2lf \g" \
         GPRINT:detected_min:"(min\: %.2lf)" \
         COMMENT:"\n" \
