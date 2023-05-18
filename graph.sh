@@ -95,6 +95,21 @@ COLORS=(
     "#A01DA0"
 )
 
+if [[ -v START ]]
+then
+    echo "Start graph at command line argument ${START}"
+else
+    START="$(rrdtool first --rraindex ${RRA} ${DB}.rrd)"
+    echo "Start graph at start of archive ${START}"
+fi
+if [[ -v END ]]
+then
+    echo "Finish graph at command line argument ${END}"
+else
+    END="$(rrdtool last ${DB}.rrd)"
+    echo "Finish graph at end of archive ${END}"
+fi
+
 NOW=`date +%s`
 if [[ ! START =~ [N] ]]
 then
@@ -144,7 +159,7 @@ rrdtool graph \
         VDEF:temp_avg=temp,AVERAGE \
         CDEF:temp_norm=temp,temp_max,/,100,\* \
         CDEF:temp_norm_avg=temp,POP,temp_avg,100,\*,temp_max,/ \
-        LINE1:temp_norm${COLORS[1]}:"temp\t" \
+        LINE1:temp${COLORS[1]}:"temp\t" \
         LINE0.5:temp_norm_avg${COLORS[1]}:dashes \
         GPRINT:temp_max:"(max\: %.2lf \g" \
         GPRINT:temp_avg:"(avg\:%.2lf)" \
@@ -155,8 +170,7 @@ rrdtool graph \
         VDEF:frat_avg=frat,AVERAGE \
         CDEF:frat_norm=frat,frat_max,/,100,\* \
         CDEF:frat_norm_avg=frat,POP,frat_avg,100,\*,frat_max,/ \
-        LINE1:frat_norm${COLORS[2]}:"fps\t" \
-        LINE0.5:frat_norm_avg${COLORS[2]}:dashes \
+        LINE1:frat${COLORS[2]}:"fps\t" \
         GPRINT:frat_max:"(max\: %.2lf \g" \
         GPRINT:frat_min:"(min\:%.2lf)" \
         COMMENT:"\n" 
