@@ -1,6 +1,6 @@
 from select import select
-from signal import signal
-from socket import socket
+from signal import signal, SIGINT
+from socket import socket, AF_PACKET, SOCK_RAW, htons
 from sys import exit
 from os.path import exists
 from os import system 
@@ -18,10 +18,10 @@ def start(eth, timeout):
   panels = set()
 
 
-  s = socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(3))
+  s = socket(AF_PACKET, SOCK_RAW, htons(3))
   s.bind((eth, 0))
   while True:
-    r, _, _, = select.select([s], [], [], 1.)
+    r, _, _, = select([s], [], [], 1.)
     if len(r) > 0:
       packet = s.recv(1500)
       src = packet[6:12]    # Source MAC address
@@ -40,19 +40,19 @@ def start(eth, timeout):
 
         now = datetime.now()
         if (now - last).seconds >= timeout:
-          shell = "rrdtool updatev panels.rrd N:{}:{}:{}:{}:{}".format(len(panels),float(temp)/10,frat)
+          shell = "rrdtool updatev panels.rrd N:{}:{}:{}".format(len(panels),float(temp)/10,frat)
           system(shell)
           panels.clear()
           last = now
-          sleep(30)
+          sleep(1800)
 
 if __name__ == '__main__':
-  signal(signal.SIGINT, sigint_handler)
+  signal(SIGINT, sigint_handler)
   if not exists ("panels.rrd"):
-    system("rrdtool create panels.rrd --step 60 "
-           "DS:detected:GAUGE:60:U:U "
-           "DS:temp:GAUGE:60:U:U "
-           "DS:frat:GAUGE:60:U:U "
+    system("rrdtool create panels.rrd --step 3600 "
+           "DS:detected:GAUGE:3600:U:U "
+           "DS:temp:GAUGE:3600:U:U "
+           "DS:frat:GAUGE:3600:U:U "
            "RRA:AVERAGE:0.5:1:1000")
 
   start("enp5s0", 2)

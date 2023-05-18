@@ -1,5 +1,7 @@
 #!/bin/bash
 
+RRA="0"
+
 OPTS="hv:d:o:t:s:e:r:h:w"
 LONGOPTS="help,verbose:,database:,output:,start:,end:,rra:,height:,min-width:"
 print_help() {
@@ -132,10 +134,8 @@ rrdtool graph \
     panels.png \
     --title "Statistics for panels from $LSTART to $LEND" \
     --watermark "$(date)" \
-    --vertical-label "% of maximum" \
     --slope-mode \
     --alt-y-grid \
-    --left-axis-format "%.0lf%%" \
     --rigid \
     --start ${START} --end ${END} \
     --width ${MIN_WIDTH} \
