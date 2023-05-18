@@ -8,7 +8,7 @@ then
 	echo "After=network.target" >> panelmonitoring.service
 	echo "" >> panelmonitoring.service
 	echo "[Service]" >> panelmonitoring.service
-	echo "ExecStart=$PWD/sudo python3 monitor.py " >> panelmonitoring.service
+	echo "ExecStart=sudo python3 $PWD/monitor.py " >> panelmonitoring.service
 	echo "Restart=always" >> panelmonitoring.service
 	echo "RestartSec=5s" >> panelmonitoring.service
 	echo "[Install]" >> panelmonitoring.service
@@ -21,6 +21,6 @@ then
 fi
 
 sudo systemctl daemon-reload
-sudo systemctl enable rrd
-sudo systemctl start rrd
-sudo systemctl status rrd
+sudo systemctl enable panelmonitoring
+sudo systemctl start panelmonitoring
+sudo systemctl status panelmonitoring
