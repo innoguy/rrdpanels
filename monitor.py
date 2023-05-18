@@ -28,7 +28,6 @@ def start(eth, timeout):
       src = packet[6:12]    # Source MAC address
       cmd = packet[14]      # Nucleus CMD
 
-
       eth_type = (packet[12] << 8) + packet[13]
       if (eth_type == 0x07d0 and src[0] == 0xe2 and src[1] == 0xff and cmd == 0x30):
         panels.add(src)
@@ -50,4 +49,4 @@ def start(eth, timeout):
 
 if __name__ == '__main__':
   signal(SIGINT, sigint_handler)
-  start("enp5s0", 2)
+  start("enp5s0", 5)
