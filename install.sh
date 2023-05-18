@@ -1,13 +1,17 @@
 #!/bin/bash
 
 DB="/var/log/panels"
+capture_window=3  # seconds to capture packet
+heartbeat=60      # seconds sleep between capturs
+capture_space=60  # seconds between recorded values
+
 
 if [ ! -f "$DB.rrd" ]
 then
-	rrdtool create $DB.rrd --step 3600 \
-		DS:detected:GAUGE:3600:U:U \
-        DS:temp:GAUGE:3600:U:U \
-        DS:frat:GAUGE:3600:U:U \
+	rrdtool create $DB.rrd --step  \
+		DS:detected:GAUGE:capture_space:U:U \
+        DS:temp:GAUGE:capture_space:U:U \
+        DS:frat:GAUGE:capture_space:U:U \
         RRA:AVERAGE:0.5:1:1000 
 fi
 

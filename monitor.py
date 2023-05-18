@@ -8,6 +8,10 @@ from datetime import datetime
 from time import sleep
 
 DB="/var/log/panels"
+capture_window=3  # seconds to capture packet
+heartbeat=60      # seconds sleep between capturs
+capture_space=60  # seconds between recorded values
+
 
 def hexstring(hexarray):
   return ''.join('{:02x}'.format(x) for x in hexarray)
@@ -45,8 +49,8 @@ def start(eth, timeout):
           system(shell)
           panels.clear()
           last = now
-          sleep(1800)
+          sleep(heartbeat)
 
 if __name__ == '__main__':
   signal(SIGINT, sigint_handler)
-  start("enp5s0", 5)
+  start("enp5s0", capture_window)
