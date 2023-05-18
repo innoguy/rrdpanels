@@ -49,7 +49,7 @@ def start(eth, timeout):
           system(shell)
           panels.clear()
           sleep(heartbeat)
-          last = now
+          last = datetime.now()
 
 if __name__ == '__main__':
   signal(SIGINT, sigint_handler)
