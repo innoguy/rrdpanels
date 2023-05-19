@@ -151,7 +151,7 @@ do
             CDEF:${p}_nbr_norm=${p}_nbr,${p}_nbr_max,/,100,\* \
             CDEF:${p}_nbr_norm_avg=${p}_nbr,POP,${p}_nbr_avg,100,\*,${p}_nbr_max,/ \
             LINE1:${p}_nbr${COLORS[0]}:"${p}_nbr\t" \
-            GPRINT:${p}_nbr:"\t\: %.2lf" \
+            GPRINT:${p}_nbr:MIN:"%.2lf" \
             COMMENT:"\n" \
         DEF:${p}_temp=${DB}.rrd:${p}_temp:AVERAGE \
             VDEF:${p}_temp_max=${p}_temp,MAXIMUM \
@@ -160,7 +160,7 @@ do
             CDEF:${p}_temp_norm=${p}_temp,${p}_temp_max,/,100,\* \
             CDEF:${p}_temp_norm_avg=${p}_temp,POP,${p}_temp_avg,100,\*,${p}_temp_max,/ \
             LINE1:${p}_temp${COLORS[1]}:"${p}_temp\t" \
-            GPRINT:${p}_temp:"\t\: %.2lf" \
+            GPRINT:${p}_temp:MAX:"%.2lf" \
             COMMENT:"\n" \
         DEF:${p}_fps=${DB}.rrd:${p}_fps:AVERAGE \
             VDEF:${p}_fps_max=${p}_fps,MAXIMUM \
@@ -169,7 +169,7 @@ do
             CDEF:${p}_fps_norm=${p}_fps,${p}_fps_max,/,100,\* \
             CDEF:${p}_fps_norm_avg=${p}_fps,POP,${p}_fps_avg,100,\*,${p}_fps_max,/ \
             LINE1:${p}_fps${COLORS[2]}:"${p}_fps\t" \
-            GPRINT:${p}_fps:"\t\: %.2lf" \
+            GPRINT:${p}_fps:MIN:"%.2lf" \
             COMMENT:"\n" \
         DEF:${p}_ifc=${DB}.rrd:${p}_ifc:AVERAGE \
             VDEF:${p}_ifc_max=${p}_ifc,MAXIMUM \
@@ -178,7 +178,7 @@ do
             CDEF:${p}_ifc_norm=${p}_ifc,${p}_ifc_max,/,100,\* \
             CDEF:${p}_ifc_norm_avg=${p}_ifc,POP,${p}_ifc_avg,100,\*,${p}_ifc_max,/ \
             LINE1:${p}_ifc${COLORS[3]}:"${p}_ifc\t" \
-            GPRINT:${p}_ifc:"\t\: %.2lf" \
+            GPRINT:${p}_ifc:MIN:"%.2lf" \
             COMMENT:"\n" 
 
 done
