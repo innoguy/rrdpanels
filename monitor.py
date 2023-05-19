@@ -75,7 +75,14 @@ def start():
               len(panels['B']), float(max_temp['B'])/10, min_fps['B'], max_ifc['B'])
             print(shell)
             system(shell)
-            panels.clear()
+            panels['A'].clear()
+            panels['B'].clear()
+            max_temp['A'] = -100
+            max_temp['B'] = -100
+            min_fps['A'] = 100
+            min_fps['B'] = 100
+            max_ifc['A'] = 0
+            max_ifc['B'] = 0
             sleep(heartbeat)
             last = datetime.now()
 
