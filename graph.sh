@@ -161,7 +161,6 @@ do
             CDEF:${p}_temp_norm=${p}_temp,${p}_temp_max,/,100,\* \
             CDEF:${p}_temp_norm_avg=${p}_temp,POP,${p}_temp_avg,100,\*,${p}_temp_max,/ \
             LINE1:${p}_temp${COLORS[1]}:"${p}_temp\t" \
-            LINE0.5:${p}_temp_norm_avg${COLORS[1]}:dashes \
             GPRINT:${p}_temp_max:"(max\: %.2lf \g" \
             GPRINT:${p}_temp_avg:"(avg\:%.2lf)" \
             COMMENT:"\n" \
@@ -181,7 +180,9 @@ do
             VDEF:${p}_ifc_avg=${p}_ifc,AVERAGE \
             CDEF:${p}_ifc_norm=${p}_ifc,${p}_ifc_max,/,100,\* \
             CDEF:${p}_ifc_norm_avg=${p}_ifc,POP,${p}_ifc_avg,100,\*,${p}_ifc_max,/ \
-            LINE1:${p}_ifc${COLORS[2]}:"ifc\t" \
+            LINE1:${p}_ifc${COLORS[3]}:"ifc\t" \
             GPRINT:${p}_ifc_max:"(max\: %.2lf \g" \
             GPRINT:${p}_ifc_min:"(min\:%.2lf)" \
             COMMENT:"\n" 
+
+done
