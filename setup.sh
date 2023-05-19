@@ -9,9 +9,14 @@ capture_space=60  # seconds between recorded values
 if [ ! -f "$DB.rrd" ]
 then
 	rrdtool create $DB.rrd --step $capture_space \
-		DS:detected:GAUGE:$capture_space:U:U \
-        DS:temp:GAUGE:$capture_space:U:U \
-        DS:frat:GAUGE:$capture_space:U:U \
+		DS:A_nbr:GAUGE:$capture_space:U:U \
+        DS:A_temp:GAUGE:$capture_space:U:U \
+        DS:A_fps:GAUGE:$capture_space:U:U \
+		DS:A_ifc:GAUGE:$capture_space:U:U \
+		DS:B_nbr:GAUGE:$capture_space:U:U \
+        DS:B_temp:GAUGE:$capture_space:U:U \
+        DS:B_fps:GAUGE:$capture_space:U:U \
+		DS:B_ifc:GAUGE:$capture_space:U:U \
         RRA:AVERAGE:0.5:1:1000 
 fi
 
