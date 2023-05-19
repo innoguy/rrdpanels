@@ -23,9 +23,6 @@ then
 	fi 
 fi
 
-
-if [ $trafB -eq 0 ]; then echo "No traffic on port B, disable port B in monitor.py!"; fi
-
 if [ ! -f "$DB.rrd" ]
 then
 	rrdtool create $DB.rrd --step $capture_space \
