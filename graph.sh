@@ -129,47 +129,59 @@ fi
 LSTART=`date +%F\ %T -d @$START`
 LEND=`date +%F\ %T -d @$END`
 
-rrdtool graph \
-    panels.png \
-    --title "Statistics for panels from $LSTART to $LEND" \
-    --watermark "$(date)" \
-    --slope-mode \
-    --alt-y-grid \
-    --rigid \
-    --start ${START} --end ${END} \
-    --width ${MIN_WIDTH} \
-    --height ${HEIGHT} \
-    --color CANVAS#181B1F \
-    --color BACK#111217 \
-    --color FONT#CCCCDC \
-     DEF:detected=${DB}.rrd:detected:AVERAGE \
-        VDEF:detected_max=detected,MAXIMUM \
-        VDEF:detected_min=detected,MINIMUM \
-        VDEF:detected_avg=detected,AVERAGE \
-        CDEF:detected_norm=detected,detected_max,/,100,\* \
-        CDEF:detected_norm_avg=detected,POP,detected_avg,100,\*,detected_max,/ \
-        LINE1:detected${COLORS[0]}:"nbr\t" \
-        GPRINT:detected_max:"(max\: %.2lf \g" \
-        GPRINT:detected_min:"(min\: %.2lf)" \
-        COMMENT:"\n" \
-    DEF:temp=${DB}.rrd:temp:AVERAGE \
-        VDEF:temp_max=temp,MAXIMUM \
-        VDEF:temp_min=temp,MINIMUM \
-        VDEF:temp_avg=temp,AVERAGE \
-        CDEF:temp_norm=temp,temp_max,/,100,\* \
-        CDEF:temp_norm_avg=temp,POP,temp_avg,100,\*,temp_max,/ \
-        LINE1:temp${COLORS[1]}:"temp\t" \
-        LINE0.5:temp_norm_avg${COLORS[1]}:dashes \
-        GPRINT:temp_max:"(max\: %.2lf \g" \
-        GPRINT:temp_avg:"(avg\:%.2lf)" \
-        COMMENT:"\n" \
-    DEF:frat=${DB}.rrd:frat:AVERAGE \
-        VDEF:frat_max=frat,MAXIMUM \
-        VDEF:frat_min=frat,MINIMUM \
-        VDEF:frat_avg=frat,AVERAGE \
-        CDEF:frat_norm=frat,frat_max,/,100,\* \
-        CDEF:frat_norm_avg=frat,POP,frat_avg,100,\*,frat_max,/ \
-        LINE1:frat${COLORS[2]}:"fps\t" \
-        GPRINT:frat_max:"(max\: %.2lf \g" \
-        GPRINT:frat_min:"(min\:%.2lf)" \
-        COMMENT:"\n" 
+for p in 'A' 'B' 
+do
+    rrdtool graph \
+        panels$p.png \
+        --title "Statistics for panels on port $p from $LSTART to $LEND" \
+        --watermark "$(date)" \
+        --slope-mode \
+        --alt-y-grid \
+        --rigid \
+        --start ${START} --end ${END} \
+        --width ${MIN_WIDTH} \
+        --height ${HEIGHT} \
+        --color CANVAS#181B1F \
+        --color BACK#111217 \
+        --color FONT#CCCCDC \
+        DEF:${p}_nbr=${DB}.rrd:${p}_nbr:AVERAGE \
+            VDEF:${p}_nbr_max=${p}_nbr,MAXIMUM \
+            VDEF:${p}_nbr_min=${p}_nbr,MINIMUM \
+            VDEF:${p}_nbr_avg=${p}_nbr,AVERAGE \
+            CDEF:${p}_nbr_norm=${p}_nbr,${p}_nbr_max,/,100,\* \
+            CDEF:${p}_nbr_norm_avg=${p}_nbr,POP,${p}_nbr_avg,100,\*,${p}_nbr_max,/ \
+            LINE1:${p}_nbr${COLORS[0]}:"nbr\t" \
+            GPRINT:${p}_nbr_max:"(max\: %.2lf \g" \
+            GPRINT:${p}_nbr_min:"(min\: %.2lf)" \
+            COMMENT:"\n" \
+        DEF:${p}_temp=${DB}.rrd:${p}_temp:AVERAGE \
+            VDEF:${p}_temp_max=${p}_temp,MAXIMUM \
+            VDEF:${p}_temp_min=${p}_temp,MINIMUM \
+            VDEF:${p}_temp_avg=${p}_temp,AVERAGE \
+            CDEF:${p}_temp_norm=${p}_temp,${p}_temp_max,/,100,\* \
+            CDEF:${p}_temp_norm_avg=${p}_temp,POP,${p}_temp_avg,100,\*,${p}_temp_max,/ \
+            LINE1:${p}_temp${COLORS[1]}:"${p}_temp\t" \
+            LINE0.5:${p}_temp_norm_avg${COLORS[1]}:dashes \
+            GPRINT:${p}_temp_max:"(max\: %.2lf \g" \
+            GPRINT:${p}_temp_avg:"(avg\:%.2lf)" \
+            COMMENT:"\n" \
+        DEF:${p}_fps=${DB}.rrd:${p}_fps:AVERAGE \
+            VDEF:${p}_fps_max=${p}_fps,MAXIMUM \
+            VDEF:${p}_fps_min=${p}_fps,MINIMUM \
+            VDEF:${p}_fps_avg=${p}_fps,AVERAGE \
+            CDEF:${p}_fps_norm=${p}_fps,${p}_fps_max,/,100,\* \
+            CDEF:${p}_fps_norm_avg=${p}_fps,POP,${p}_fps_avg,100,\*,${p}_fps_max,/ \
+            LINE1:${p}_fps${COLORS[2]}:"fps\t" \
+            GPRINT:${p}_fps_max:"(max\: %.2lf \g" \
+            GPRINT:${p}_fps_min:"(min\:%.2lf)" \
+            COMMENT:"\n" \
+        DEF:${p}_ifc=${DB}.rrd:${p}_ifc:AVERAGE \
+            VDEF:${p}_ifc_max=${p}_ifc,MAXIMUM \
+            VDEF:${p}_ifc_min=${p}_ifc,MINIMUM \
+            VDEF:${p}_ifc_avg=${p}_ifc,AVERAGE \
+            CDEF:${p}_ifc_norm=${p}_ifc,${p}_ifc_max,/,100,\* \
+            CDEF:${p}_ifc_norm_avg=${p}_ifc,POP,${p}_ifc_avg,100,\*,${p}_ifc_max,/ \
+            LINE1:${p}_ifc${COLORS[2]}:"ifc\t" \
+            GPRINT:${p}_ifc_max:"(max\: %.2lf \g" \
+            GPRINT:${p}_ifc_min:"(min\:%.2lf)" \
+            COMMENT:"\n" 
