@@ -27,29 +27,19 @@ def start():
   min_fps = {}
   max_ifc = {}
   panels = {}
-  panels['A'] = set()
-  panels['B'] = set()
 
-  s['A'] = socket(AF_PACKET, SOCK_RAW, htons(3))
-  s['B'] = socket(AF_PACKET, SOCK_RAW, htons(3))
-
-  s['A'].bind((dev['A'], 0))
-  s['B'].bind((dev['B'], 0))
-
-  max_temp['A'] = -100
-  max_temp['B'] = -100
-
-  min_fps['A'] = 100
-  min_fps['B'] = 100
-
-  max_ifc['A'] = 0
-  max_ifc['B'] = 0
+  for p in ['A','B']:
+    panels[p] = set()
+    s[p] = socket(AF_PACKET, SOCK_RAW, htons(3))
+    s[p].bind((dev[p], 0))
+    max_temp[p] = -100
+    min_fps[p] = 100
+    max_ifc[p] = 0
 
   while True:
-    r['A'], _, _, = select([s['A']], [], [], 1.)
-    r['B'], _, _, = select([s['B']], [], [], 1.)
-
+ 
     for p in ['A', 'B']:
+      r[p], _, _, = select([s[p]], [], [], 1.)
       if len(r[p]) > 0:
         packet = s[p].recv(1500)
         src = packet[6:12]    # Source MAC address
