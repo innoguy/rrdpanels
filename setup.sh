@@ -5,6 +5,26 @@ capture_window=3  # seconds to capture packet
 heartbeat=30      # seconds sleep between captures
 capture_space=60  # seconds between recorded values
 
+# Stop installation if configured to monitor non-active port 
+if [ $(cat /proc/net/dev | grep 'enp5s0' | awk '{print $2}') -eq 0 ]
+then
+	if [ ! -z "$( grep 'ports =' monitor.py | grep 'A')" ]
+	then 
+		echo "No traffic on port A, disable port A in monitor.py";
+		exit 1
+	fi 
+fi
+if [ $(cat /proc/net/dev | grep 'enp4s0' | awk '{print $2}') -eq 0 ]
+then
+	if [ ! -z "$( grep 'ports =' monitor.py | grep 'B')" ]
+	then 
+		echo "No traffic on port B, disable port B in monitor.py";
+		exit 1
+	fi 
+fi
+
+
+if [ $trafB -eq 0 ]; then echo "No traffic on port B, disable port B in monitor.py!"; fi
 
 if [ ! -f "$DB.rrd" ]
 then
