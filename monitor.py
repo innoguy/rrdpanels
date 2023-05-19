@@ -8,11 +8,11 @@ from datetime import datetime
 from time import sleep
 
 DB="/var/log/panels"
-capture_window=3  # seconds to capture packet
-heartbeat=30      # seconds sleep between captures
-capture_space=60  # seconds between recorded values
+capture_window=3    # seconds to capture packet
+heartbeat=30        # seconds sleep between captures
+capture_space=60    # seconds between recorded values
 dev = {'A':'enp5s0', 'B':'enp4s0'}
-ports = ['A', 'B']
+ports = ['A', 'B']  # only include active ports!
 
 def hexstring(hexarray):
   return ''.join('{:02x}'.format(x) for x in hexarray)
