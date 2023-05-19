@@ -29,13 +29,15 @@ def start():
   max_ifc = {}
   panels = {}
 
-  for p in ports:
-    panels[p] = set()
+  for p in ports: # only ports with traffic
     s[p] = socket(AF_PACKET, SOCK_RAW, htons(3))
     s[p].bind((dev[p], 0))
+
+  for p in ['A','B']: # all ports
     max_temp[p] = -10
     min_fps[p] = 60
     max_ifc[p] = 0
+    panels[p] = set()
 
   while True:
  
