@@ -12,6 +12,7 @@ capture_window=3  # seconds to capture packet
 heartbeat=30      # seconds sleep between captures
 capture_space=60  # seconds between recorded values
 dev = {'A':'enp5s0', 'B':'enp4s0'}
+ports = ['A', 'B']
 
 def hexstring(hexarray):
   return ''.join('{:02x}'.format(x) for x in hexarray)
@@ -28,17 +29,17 @@ def start():
   max_ifc = {}
   panels = {}
 
-  for p in ['A','B']:
+  for p in ports:
     panels[p] = set()
     s[p] = socket(AF_PACKET, SOCK_RAW, htons(3))
     s[p].bind((dev[p], 0))
-    max_temp[p] = -100
-    min_fps[p] = 100
+    max_temp[p] = -10
+    min_fps[p] = 60
     max_ifc[p] = 0
 
   while True:
  
-    for p in ['A', 'B']:
+    for p in ports:
       r[p], _, _, = select([s[p]], [], [], 1.)
       if len(r[p]) > 0:
         packet = s[p].recv(1500)
