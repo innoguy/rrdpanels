@@ -33,7 +33,7 @@ def start():
     s[p] = socket(AF_PACKET, SOCK_RAW, htons(3))
     s[p].bind((dev[p], 0))
 
-  for p in ['A','B']: # all ports
+  for p in ['A','B']: # all ports must be initialized here
     max_temp[p] = -10
     min_fps[p] = 60
     max_ifc[p] = 0
@@ -66,7 +66,6 @@ def start():
               DB,
               len(panels['A']), float(max_temp['A'])/10, min_fps['A'], max_ifc['A'],
               len(panels['B']), float(max_temp['B'])/10, min_fps['B'], max_ifc['B'])
-            print(shell)
             system(shell)
             panels['A'].clear()
             panels['B'].clear()

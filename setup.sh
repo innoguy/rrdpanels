@@ -1,9 +1,9 @@
 #!/bin/bash
 
 DB="/var/log/panels"
-capture_window=3  # seconds to capture packet
-heartbeat=30      # seconds sleep between captures
-capture_space=60  # seconds between recorded values
+capture_window=1   # seconds to capture packet
+heartbeat=300      # seconds sleep between captures
+capture_space=600  # seconds between recorded values
 
 # Stop installation if configured to monitor non-active port 
 if [ $(cat /proc/net/dev | grep 'enp5s0' | awk '{print $2}') -eq 0 ]
