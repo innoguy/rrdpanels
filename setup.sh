@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DB="/var/log/panels"
+DB="/var/log/cirrus-rrd/panels"
 capture_window=1   # seconds to capture packet
 heartbeat=300      # seconds sleep between captures
 capture_space=600  # seconds between recorded values
