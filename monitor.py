@@ -7,7 +7,7 @@ from os import system
 from datetime import datetime
 from time import sleep
 
-DB="/var/log/panels"
+DB="/var/log/cirrus-rrd/panels"
 capture_window=3    # seconds to capture packet
 heartbeat=30        # seconds sleep between captures
 capture_space=60    # seconds between recorded values
