@@ -29,11 +29,11 @@ then
 		DS:A_nbr:GAUGE:$capture_space:U:U \
         DS:A_temp:GAUGE:$capture_space:U:U \
         DS:A_fps:GAUGE:$capture_space:U:U \
-		DS:A_ifc:GAUGE:$capture_space:U:U \
+		DS:A_ifc:COUNTER:$capture_space:U:U \
 		DS:B_nbr:GAUGE:$capture_space:U:U \
         DS:B_temp:GAUGE:$capture_space:U:U \
         DS:B_fps:GAUGE:$capture_space:U:U \
-		DS:B_ifc:GAUGE:$capture_space:U:U \
+		DS:B_ifc:COUNTER:$capture_space:U:U \
         RRA:AVERAGE:0.5:1:1000 
 fi
 
