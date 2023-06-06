@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from select import select
 from signal import signal, SIGINT
 from socket import socket, AF_PACKET, SOCK_RAW, htons
